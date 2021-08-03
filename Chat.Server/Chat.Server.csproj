@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Proto.Remote" Version="0.21.0" />
+    <PackageReference Include="Proto.Remote.GrpcCore" Version="0.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chat.Messages\Chat.Messages.csproj" />
+  </ItemGroup>
+
+</Project>

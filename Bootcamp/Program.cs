@@ -18,7 +18,8 @@ namespace Bootcamp
             // Demo02();
             // Demo03();
             // Demo04();
-            Demo05();
+            // Demo05();
+            Demo06();
 
             Thread.Sleep(TimeSpan.FromSeconds(1));
             Console.Write("Press [Enter] key to quit...");
@@ -190,6 +191,22 @@ namespace Bootcamp
                 Console.WriteLine();
             }
             while (true);
+        }
+
+        static void Demo06()
+        {
+            AsyncContext.Run(async () =>
+            {
+                var system = new ActorSystem();
+                var props = Props.FromProducer(() => new EchoActor());
+                var pid = system.Root.Spawn(props);
+
+                system.EventStream.Subscribe<DeadLetterEvent>((msg) => Console.WriteLine($"Sender: {msg.Sender}, Pid: {msg.Pid}, Message: {msg.Message}"));
+
+                system.Root.Send(pid, new TestMessage());
+                await system.Root.PoisonAsync(pid);
+                system.Root.Send(pid, new TestMessage());
+            });
         }
 
         private class Decider

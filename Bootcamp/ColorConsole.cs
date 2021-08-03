@@ -6,20 +6,42 @@ namespace Bootcamp
 {
     public class ColorConsole
     {
-        public static void WriteLineGreen(string message)
+        private static void WriteLineWithColor(string message, ConsoleColor color)
         {
             var beforeColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = color;
             Console.WriteLine(message);
             Console.ForegroundColor = beforeColor;
         }
 
+        public static void WriteLineGreen(string message)
+        {
+            WriteLineWithColor(message, ConsoleColor.Green);
+        }
+
+        public static void WriteLineCyan(string message)
+        {
+            WriteLineWithColor(message, ConsoleColor.Cyan);
+        }
+
         public static void WriteLineYellow(string message)
         {
-            var beforeColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(message);
-            Console.ForegroundColor = beforeColor;
+            WriteLineWithColor(message, ConsoleColor.Yellow);
+        }
+
+        public static void WriteLineRed(string message)
+        {
+            WriteLineWithColor(message, ConsoleColor.Red);
+        }
+
+        public static void WriteLineGray(string message)
+        {
+            WriteLineWithColor(message, ConsoleColor.Gray);
+        }
+
+        public static void WriteMagenta(string message)
+        {
+            WriteLineWithColor(message, ConsoleColor.Magenta);
         }
     }
 }

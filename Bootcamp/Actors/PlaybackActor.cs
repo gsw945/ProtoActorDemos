@@ -10,6 +10,12 @@ namespace Bootcamp.Actors
 {
     public class PlaybackActor : IActor
     {
+        private Dictionary<string, PID> _links = new Dictionary<string, PID>();
+
+        private PID _userCoordinatorActorRef;
+        private PID _moviePlayCounterActorRef;
+        private string _currentlyWatching;
+
         public PlaybackActor() => Console.WriteLine("Creating a PlaybackActor");
 
         public Task ReceiveAsync(IContext context)
@@ -17,7 +23,7 @@ namespace Bootcamp.Actors
             switch (context.Message)
             {
                 case Started msg:
-                    ProcessStartedMessage(msg);
+                    ProcessStartedMessage(context, msg);
                     break;
                 /*
                 case string movieTitle:
@@ -41,15 +47,29 @@ namespace Bootcamp.Actors
                 case Stopped msg:
                     Console.WriteLine("actor is stopped");
                     break;
+                case RequestActorPidMessage msg:
+                    ProcessRequestActorPidMessage(context, msg);
+                    break;
                 default:
                     break;
             }
             return Task.CompletedTask;
         }
 
-        private void ProcessStartedMessage(Started msg)
+        private void ProcessRequestActorPidMessage(IContext context, RequestActorPidMessage msg)
+        {
+            context.Respond(new ResponseActorPidMessage(_userCoordinatorActorRef));
+        }
+
+        private void ProcessStartedMessage(IContext context, Started msg)
         {
             ColorConsole.WriteLineGreen("PlaybackActor Started");
+
+            var moviePlayCounterActorProps = Props.FromProducer(() => new MoviePlayCounterActor());
+            _moviePlayCounterActorRef = context.Spawn(moviePlayCounterActorProps);
+
+            var props = Props.FromProducer(() => new UserCoordinatorActor(_moviePlayCounterActorRef));
+            _userCoordinatorActorRef = context.Spawn(props);
         }
 
         private void ProcessPlayMovieMessage(PlayMovieMessage msg)

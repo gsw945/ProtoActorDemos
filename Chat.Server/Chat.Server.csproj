@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Proto.Remote" Version="0.21.0" />
     <PackageReference Include="Proto.Remote.GrpcCore" Version="0.21.0" />
   </ItemGroup>
 

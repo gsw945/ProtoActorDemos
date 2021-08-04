@@ -1,4 +1,4 @@
-﻿using chat.messages;
+﻿using Chat.Messages;
 using Proto;
 using Proto.Remote;
 using Proto.Remote.GrpcCore;
